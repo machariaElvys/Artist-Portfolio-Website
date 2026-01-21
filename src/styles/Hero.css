@@ -8,13 +8,19 @@
 }
 
 .title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Sevillana", cursive;
+  font-weight: 500;
+  font-style: normal;
   font-size: 3rem;
   margin: 0;
 }
 
 .subtitle {
-  font-size: 1.2rem;
+  font-family: "Zeyada", cursive;
+  font-weight: 10000;
+  
+  font-style: normal;
+  font-size: 2.6rem;
   color: #555;
   margin-top: 0.5rem;
 }
@@ -25,3 +31,40 @@
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 23px; 
+  height: 18px; 
+  cursor: pointer;
+}
+
+.bar {
+  height: 3px;        
+  width: 100%;        
+  background-color: #111;
+  border-radius: 2px; 
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .menu {
+    width: 100%;
+    right: 0;
+    top: 70px;
+    flex-direction: column;
+    background-color: #fafafa;
+    display: none;
+  }
+
+  .menu.active {
+    display: flex;
+  }
+}
+
