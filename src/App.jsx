@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import Footer from "./components/Footer";
 // import Gallery from "./components/Gallery";
 // import About from "./components/About";
 // import Contact from "./components/Contact";
@@ -10,6 +11,7 @@ function App() {
     <div>
       <Navbar />
       <Hero />
+      <Footer/>
       {/* <Gallery /> */}
       {/* <About /> */}
       {/* <Contact /> */}
