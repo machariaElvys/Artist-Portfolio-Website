@@ -1,6 +1,3 @@
-
-
-/*  Navbar styles */
 .nav {
   display: flex;
   justify-content: space-between;
@@ -8,17 +5,20 @@
   padding: 1rem 2rem;
   background-color: #fafafa;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  position: relative; 
+  position: relative;
   z-index: 100;
+  /* background-color: rgb(105, 95, 83); */
 }
 
+/* LOGO */
 .logo {
   font-family: "Sevillana", cursive;
-  font-weight: 590;
+  font-weight: 595;
   font-style: normal;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
 }
 
+/* MENU (DESKTOP) */
 .menu {
   list-style: none;
   display: flex;
@@ -26,12 +26,11 @@
   margin: 0;
   padding: 0;
   font-family: "Zeyada", cursive;
-  font-weight:9000;
+  font-weight: 900;
   font-size: 1.7rem;
-
-  
 }
 
+/* LINKS */
 .link {
   position: relative;
   text-decoration: none;
@@ -39,7 +38,7 @@
   font-weight: 500;
 }
 
-/* Hover effect */
+/* Hover underline */
 .link::after {
   content: "";
   position: absolute;
@@ -61,7 +60,7 @@
   transition: all 0.3s ease;
 }
 
-/* Hamburger button */
+/* HAMBURGER */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -92,27 +91,27 @@
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile Responsive */
+/* MOBILE FIXED VERSION */
 @media (max-width: 768px) {
   .menu {
-    flex-direction: column;
     position: absolute;
-    top: 100%; 
+    top: 100%; /* directly below navbar */
     left: 0;
     width: 100%;
-    display: none;
+    flex-direction: column;
+    align-items: center;
     background-color: #fafafa;
     gap: 1rem;
-    padding: 1rem 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    overflow: hidden;
+    padding: 0;
     max-height: 0;
-    transition: max-height 0.3s ease;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: max-height 0.35s ease;
   }
 
   .menu.active {
-    display: flex;
-    max-height: 500px; 
+    max-height: 300px; /* enough for links */
+    padding: 1rem 0;
   }
 
   .hamburger {

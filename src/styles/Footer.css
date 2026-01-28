@@ -1,6 +1,9 @@
 .footer {
   padding: 2.5rem 1.5rem;
   text-align: center;
+  align-items: baseline;
+  /* background-color: rgb(105, 95, 83); */
+
 }
 
 .footer-content {

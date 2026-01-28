@@ -3,7 +3,7 @@ import "../styles/Footer.css";
 
 function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer " id="contact">
       <div className="footer-content">
         <h2 className="footer-title">JADA ART STUDIO</h2>
 
