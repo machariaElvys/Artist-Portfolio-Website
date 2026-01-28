@@ -84,9 +84,11 @@
 }
 
 .modal-content img {
-  max-width: 200%;
+  max-width: 100%;
   max-height: 90vh;
   border-radius: 6px;
+  display: block;
+  margin: 0 auto;
 }
 
 .modal-content h3 {
@@ -110,5 +112,6 @@
 @media (max-width: 600px) {
   .modal-content {
     padding: 0.5rem;
+    max-width: 95%;
   }
 }
