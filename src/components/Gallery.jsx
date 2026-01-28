@@ -17,6 +17,7 @@ function Gallery() {
             onClick={() => setSelectedPainting(painting)}
           >
             <img src={painting.image} alt={painting.title} />
+            
             <p className="gallery-caption">{painting.title}</p>
           </div>
         ))}
