@@ -51,6 +51,7 @@
 }
 
 
+
 .gallery-caption {
   margin-top: 0.6rem;
   font-size: 0.9rem;
@@ -103,4 +104,11 @@
   background: none;
   font-size: 2rem;
   cursor: pointer;
+}
+
+/* MOBILE TWEAK */
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 0.5rem;
+  }
 }
