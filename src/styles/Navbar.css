@@ -7,7 +7,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   position: relative;
   z-index: 100;
-  /* background-color: rgb(105, 95, 83); */
+  background-color: #f5e8dd;
 }
 
 /* LOGO */
@@ -55,7 +55,7 @@
 }
 
 .link:hover {
-  color: #ff6f61;
+  color:  #ff6f61;
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
@@ -68,6 +68,7 @@
   width: 25px;
   height: 18px;
   cursor: pointer;
+  background-color: rgb(255, 240, 222);
 }
 
 .bar {
@@ -100,7 +101,7 @@
     width: 100%;
     flex-direction: column;
     align-items: center;
-    background-color: #fafafa;
+    background-color: #e3e078;
     gap: 1rem;
     padding: 0;
     max-height: 0;
