@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import "../styles/Gallery.css";
 import paintings from "../data/artwork.js";
@@ -17,7 +18,6 @@ function Gallery() {
             onClick={() => setSelectedPainting(painting)}
           >
             <img src={painting.image} alt={painting.title} />
-            
             <p className="gallery-caption">{painting.title}</p>
           </div>
         ))}
@@ -25,7 +25,10 @@ function Gallery() {
 
       {/* MODAL */}
       {selectedPainting && (
-        <div className="modal-overlay" onClick={() => setSelectedPainting(null)}>
+        <div
+          className="modal-overlay"
+          onClick={() => setSelectedPainting(null)}
+        >
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
@@ -40,8 +43,17 @@ function Gallery() {
             <img
               src={selectedPainting.image}
               alt={selectedPainting.title}
+              className="modal-image"
             />
-            <h3>{selectedPainting.title}</h3>
+
+            <h2 className="modal-title">{selectedPainting.title}</h2>
+            <p className="modal-medium">
+              <strong>Medium:</strong> {selectedPainting.medium}
+            </p>
+            <p className="modal-year">
+              <strong>Year:</strong> {selectedPainting.year}
+            </p>
+            <p className="modal-description">{selectedPainting.description}</p>
           </div>
         </div>
       )}
