@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/Footer.css";
-import instaIcon from "../assets/paintings/email.png";
-import emailIcon from "../assets/paintings/insta.png";
+import instaIcon from "../assets/paintings/insta.png";
+import emailIcon from "../assets/paintings/email.png";
 
 function Footer() {
   return (
