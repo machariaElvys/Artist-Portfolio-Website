@@ -62,3 +62,23 @@
     font-size: 0.7rem;
   }
 }
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.footer-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-icon:hover {
+  transform: scale(1.2);
+  opacity: 0.85;
+}
+
