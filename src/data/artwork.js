@@ -36,15 +36,12 @@ const paintings = [
     title: " ",
     image: p1,
   },
-  // {
-  //   id: 2,
-  //   title: "",
-  //   image: p2,
-  // },
-  // {
+  {
+    id: 2,
+    title: "",
+    image: p2,
+  },
   
-
-
 
 ];
 
