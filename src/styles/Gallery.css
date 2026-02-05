@@ -148,3 +148,68 @@
     max-height: 50vh;
   }
 }
+
+
+/* ===== GLASS ARROWS ===== */
+
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+
+  /* Glass Effect */
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+
+  transition: all 0.3s ease;
+}
+
+.modal-nav:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%) scale(1.12);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.modal-nav:active {
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Left */
+.modal-prev {
+  left: 12px;
+}
+
+/* Right */
+.modal-next {
+  right: 12px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .modal-nav {
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+  }
+}
+.modal-content {
+  touch-action: pan-y;
+}
+
