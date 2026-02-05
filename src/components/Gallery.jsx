@@ -157,6 +157,17 @@ useEffect(() => {
             {/* Details */}
             <h2 className="modal-title">{selectedPainting.title}</h2>
 
+
+            <p className="modal-counter">
+             {paintings.findIndex(
+             (p) => p.id === selectedPainting.id
+            ) + 1}
+            {" / "}
+             {paintings.length}
+          </p>
+
+            
+
             <p className="modal-medium">
               <strong>Medium:</strong> {selectedPainting.medium}
             </p>
