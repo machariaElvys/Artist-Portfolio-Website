@@ -1,17 +1,18 @@
-import React, { useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styles/Gallery.css";
 import paintings from "../data/artwork.js";
-import themeIcon from "../assets/paintings/dark.png"
+// import themeIcon from "../assets/paintings/dark.png";
 
 function Gallery() {
   const [selectedPainting, setSelectedPainting] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
-
+  const [loading, setLoading] = useState(true);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-useEffect(() => {
+  // Load dark mode from localStorage (optional)
+  useEffect(() => {
     const saved = localStorage.getItem("darkMode");
     if (saved === "true") {
       setDarkMode(true);
@@ -19,19 +20,20 @@ useEffect(() => {
     }
   }, []);
 
-
-  /* Toggle Dark Mode */
+  // Toggle dark mode (optional)
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-
-    document.body.classList.toggle("dark");
-
-    localStorage.setItem("darkMode", !darkMode);
+    setDarkMode((prev) => {
+      const newMode = !prev;
+      document.body.classList.toggle("dark", newMode);
+      localStorage.setItem("darkMode", newMode);
+      return newMode;
+    });
   };
 
   // Open modal
   const openModal = (painting) => {
     setSelectedPainting(painting);
+    setLoading(true); // Reset spinner whenever modal opens
   };
 
   // Close modal
@@ -44,9 +46,9 @@ useEffect(() => {
     const currentIndex = paintings.findIndex(
       (p) => p.id === selectedPainting.id
     );
-
     const nextIndex = (currentIndex + 1) % paintings.length;
     setSelectedPainting(paintings[nextIndex]);
+    setLoading(true);
   };
 
   // Previous image
@@ -54,51 +56,36 @@ useEffect(() => {
     const currentIndex = paintings.findIndex(
       (p) => p.id === selectedPainting.id
     );
-
-    const prevIndex =
-      (currentIndex - 1 + paintings.length) % paintings.length;
-
+    const prevIndex = (currentIndex - 1 + paintings.length) % paintings.length;
     setSelectedPainting(paintings[prevIndex]);
+    setLoading(true);
   };
 
-  /* Touch Start */
+  // Touch start
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  /* Touch End */
+  // Touch end
   const handleTouchEnd = (e) => {
     touchEndX.current = e.changedTouches[0].clientX;
-
     handleSwipe();
   };
 
-  /* Detect swipe */
+  // Swipe detection
   const handleSwipe = () => {
     const distance = touchStartX.current - touchEndX.current;
-
-    // Minimum swipe distance
-    if (Math.abs(distance) < 50) return;
-
-    if (distance > 0) {
-      nextImage(); // Swipe left
-    } else {
-      prevImage(); // Swipe right
-    }
+    if (Math.abs(distance) < 50) return; // Minimum swipe distance
+    if (distance > 0) nextImage(); // swipe left
+    else prevImage(); // swipe right
   };
 
-
   return (
-    <section  className={`gallery ${darkMode ? "dark" : ""}`}
-  id="gallery" >
-    {/* Dark Mode Button */}
-{/* <button
-  className="theme-toggle"
-  onClick={toggleDarkMode}
->
-  <img src={themeIcon} alt="Toggle theme" />
-</button> */}
-
+    <section className={`gallery ${darkMode ? "dark" : ""}`} id="gallery">
+      {/* Dark Mode Button (optional) */}
+      {/* <button className="theme-toggle" onClick={toggleDarkMode}>
+        <img src={themeIcon} alt="Toggle theme" />
+      </button> */}
 
       <h2 className="gallery-title">Gallery</h2>
 
@@ -121,8 +108,6 @@ useEffect(() => {
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
-
-            /* Swipe handlers */
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
@@ -132,41 +117,33 @@ useEffect(() => {
             </button>
 
             {/* Prev */}
-            <button
-              className="modal-nav modal-prev"
-              onClick={prevImage}
-            >
+            <button className="modal-nav modal-prev" onClick={prevImage}>
               ‹
             </button>
 
             {/* Next */}
-            <button
-              className="modal-nav modal-next"
-              onClick={nextImage}
-            >
+            <button className="modal-nav modal-next" onClick={nextImage}>
               ›
             </button>
+
+            {/* Loading spinner */}
+            {loading && <div className="spinner"></div>}
 
             {/* Image */}
             <img
               src={selectedPainting.image}
               alt={selectedPainting.title}
               className="modal-image"
+              onLoad={() => setLoading(false)}
             />
 
             {/* Details */}
             <h2 className="modal-title">{selectedPainting.title}</h2>
 
-
             <p className="modal-counter">
-             {paintings.findIndex(
-             (p) => p.id === selectedPainting.id
-            ) + 1}
-            {" / "}
-             {paintings.length}
-          </p>
-
-            
+              {paintings.findIndex((p) => p.id === selectedPainting.id) + 1} /{" "}
+              {paintings.length}
+            </p>
 
             <p className="modal-medium">
               <strong>Medium:</strong> {selectedPainting.medium}
@@ -176,9 +153,7 @@ useEffect(() => {
               <strong>Year:</strong> {selectedPainting.year}
             </p>
 
-            <p className="modal-description">
-              {selectedPainting.description}
-            </p>
+            <p className="modal-description">{selectedPainting.description}</p>
           </div>
         </div>
       )}
