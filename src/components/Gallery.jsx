@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import "../styles/Gallery.css";
 import paintings from "../data/artwork.js";
 // import themeIcon from "../assets/paintings/dark.png";
+import openSound from "../assets//music/open.mp3";
+import clickSound from "../assets//music/clk.mp3";
+
 
 function Gallery() {
   const [selectedPainting, setSelectedPainting] = useState(null);
@@ -34,6 +37,10 @@ function Gallery() {
   const openModal = (painting) => {
     setSelectedPainting(painting);
     setLoading(true); // Reset spinner whenever modal opens
+
+     const audio = new Audio(openSound);
+     audio.play();
+
   };
 
   // Close modal
@@ -49,6 +56,9 @@ function Gallery() {
     const nextIndex = (currentIndex + 1) % paintings.length;
     setSelectedPainting(paintings[nextIndex]);
     setLoading(true);
+
+     const audio = new Audio(clickSound);
+     audio.play();
   };
 
   // Previous image
@@ -59,6 +69,9 @@ function Gallery() {
     const prevIndex = (currentIndex - 1 + paintings.length) % paintings.length;
     setSelectedPainting(paintings[prevIndex]);
     setLoading(true);
+
+     const audio = new Audio(clickSound);
+     audio.play();
   };
 
   // Touch start
@@ -81,6 +94,7 @@ function Gallery() {
   };
 
   return (
+
     <section className={`gallery ${darkMode ? "dark" : ""}`} id="gallery">
       {/* Dark Mode Button (optional) */}
       {/* <button className="theme-toggle" onClick={toggleDarkMode}>
