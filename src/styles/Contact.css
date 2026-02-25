@@ -1,0 +1,100 @@
+:root {
+  --bg: #f6f1ea;
+  --text: #1c1c1c;
+  --muted: rgba(28, 28, 28, 0.7);
+  --line: rgba(28, 28, 28, 0.12);
+  --card: rgba(255, 255, 255, 0.72);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.10);
+  --shadowHover: 0 26px 70px rgba(0, 0, 0, 0.14);
+  --radius: 18px;
+}
+
+.contact {
+  background: var(--bg);
+  padding: 6rem 2rem;
+}
+
+.contact__inner {
+  width: min(1100px, 92vw);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact__kicker {
+  margin: 0 0 0.9rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.contact__title {
+  margin: 0;
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.contact__text {
+  margin: 1rem auto 0;
+  max-width: 65ch;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.contact__grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.contact__card {
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.1rem;
+  box-shadow: var(--shadow);
+
+  display: grid;
+  gap: 0.35rem;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact__card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadowHover);
+}
+
+.contact__label {
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(28, 28, 28, 0.55);
+}
+
+.contact__value {
+  font-size: 1rem;
+  color: rgba(28, 28, 28, 0.85);
+}
+
+.contact__note {
+  margin-top: 1.3rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact {
+    padding: 5rem 1.2rem;
+  }
+}

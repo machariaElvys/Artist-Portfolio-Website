@@ -5,7 +5,7 @@ import emailIcon from "../assets/paintings/email.png";
 
 function Footer() {
   return (
-    <footer className="footer" id="contact">
+    <footer className="footer" id="footer">
       <div className="footer-content">
         <h2 className="footer-title">JADA ART STUDIO</h2>
 

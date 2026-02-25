@@ -1,49 +1,64 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
+  const closeMenu = () => setOpen(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // close menu when resizing to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 860) setOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   return (
-    <nav className="nav">
-      <h1 className="logo">JADA</h1>
+    <header className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
+      <div className="nav__inner">
+        <a className="nav__brand" href="#home" onClick={closeMenu}>
+          JADA
+        </a>
 
-      <ul className={`menu ${isOpen ? "active" : ""}`}>
-        <li>
-          <a href="#home" className="link" onClick={closeMenu}>
+        <button
+          className="nav__toggle"
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+          aria-expanded={open}
+        >
+          <span className={`nav__burger ${open ? "is-open" : ""}`}>
+            <span />
+            <span />
+          </span>
+        </button>
+
+        <nav className={`nav__links ${open ? "is-open" : ""}`}>
+          <a href="#home" onClick={closeMenu}>
             Home
           </a>
-        </li>
-        <li>
-          <a href="#gallery" className="link" onClick={closeMenu}>
-            Gallery
-          </a>
-        </li>
-        <li>
-          <a href="#about" className="link" onClick={closeMenu}>
+          <a href="#about" onClick={closeMenu}>
             About
           </a>
-        </li>
-        <li>
-          <a href="#contact" className="link" onClick={closeMenu}>
+          <a href="#gallery" onClick={closeMenu}>
+            Gallery
+          </a>
+          <a href="#contact" onClick={closeMenu} className="nav__cta">
             Contact
           </a>
-        </li>
-      </ul>
-
-      <div
-        className={`hamburger ${isOpen ? "active" : ""}`}
-        onClick={toggleMenu}
-      >
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 };
 

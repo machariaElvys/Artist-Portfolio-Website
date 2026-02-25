@@ -1,149 +1,151 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import "../styles/Gallery.css";
 import paintings from "../data/artwork.js";
-// import themeIcon from "../assets/paintings/dark.png";
-import openSound from "../assets//music/open.mp3";
-import clickSound from "../assets//music/clk.mp3";
-
+import openSound from "../assets/music/open.mp3";
+import clickSound from "../assets/music/clk.mp3";
 
 function Gallery() {
   const [selectedPainting, setSelectedPainting] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // Load dark mode from localStorage (optional)
+  // audio (avoid new Audio each time)
+  const openAudioRef = useRef(null);
+  const clickAudioRef = useRef(null);
+
   useEffect(() => {
-    const saved = localStorage.getItem("darkMode");
-    if (saved === "true") {
-      setDarkMode(true);
-      document.body.classList.add("dark");
-    }
+    openAudioRef.current = new Audio(openSound);
+    clickAudioRef.current = new Audio(clickSound);
   }, []);
 
-  // Toggle dark mode (optional)
-  const toggleDarkMode = () => {
-    setDarkMode((prev) => {
-      const newMode = !prev;
-      document.body.classList.toggle("dark", newMode);
-      localStorage.setItem("darkMode", newMode);
-      return newMode;
-    });
+  const playAudio = (ref) => {
+    const audio = ref.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
   };
 
-  // Open modal
+  const selectedIndex = useMemo(() => {
+    if (!selectedPainting) return -1;
+    return paintings.findIndex((p) => p.id === selectedPainting.id);
+  }, [selectedPainting]);
+
+  const preload = (src) => {
+    if (!src) return;
+    const img = new Image();
+    img.src = src;
+  };
+
   const openModal = (painting) => {
     setSelectedPainting(painting);
-    setLoading(true); // Reset spinner whenever modal opens
-
-     const audio = new Audio(openSound);
-     audio.play();
-
+    setLoading(true);
+    playAudio(openAudioRef);
   };
 
-  // Close modal
   const closeModal = () => {
     setSelectedPainting(null);
   };
 
-  // Next image
   const nextImage = () => {
-    const currentIndex = paintings.findIndex(
-      (p) => p.id === selectedPainting.id
-    );
-    const nextIndex = (currentIndex + 1) % paintings.length;
+    if (!selectedPainting) return;
+    const nextIndex = (selectedIndex + 1) % paintings.length;
     setSelectedPainting(paintings[nextIndex]);
     setLoading(true);
-
-     const audio = new Audio(clickSound);
-     audio.play();
+    playAudio(clickAudioRef);
   };
 
-  // Previous image
   const prevImage = () => {
-    const currentIndex = paintings.findIndex(
-      (p) => p.id === selectedPainting.id
-    );
-    const prevIndex = (currentIndex - 1 + paintings.length) % paintings.length;
+    if (!selectedPainting) return;
+    const prevIndex = (selectedIndex - 1 + paintings.length) % paintings.length;
     setSelectedPainting(paintings[prevIndex]);
     setLoading(true);
-
-     const audio = new Audio(clickSound);
-     audio.play();
+    playAudio(clickAudioRef);
   };
 
-  // Touch start
+  // swipe
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  // Touch end
   const handleTouchEnd = (e) => {
     touchEndX.current = e.changedTouches[0].clientX;
-    handleSwipe();
+    const distance = touchStartX.current - touchEndX.current;
+    if (Math.abs(distance) < 50) return;
+    if (distance > 0) nextImage();
+    else prevImage();
   };
 
-  // Swipe detection
-  const handleSwipe = () => {
-    const distance = touchStartX.current - touchEndX.current;
-    if (Math.abs(distance) < 50) return; // Minimum swipe distance
-    if (distance > 0) nextImage(); // swipe left
-    else prevImage(); // swipe right
-  };
+  // lock scroll + keyboard controls + preload neighbors
+  useEffect(() => {
+    if (!selectedPainting) return;
+
+    // scroll lock
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    // preload prev/next
+    const nextIdx = (selectedIndex + 1) % paintings.length;
+    const prevIdx = (selectedIndex - 1 + paintings.length) % paintings.length;
+    preload(paintings[nextIdx]?.image);
+    preload(paintings[prevIdx]?.image);
+
+    // keyboard
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") closeModal();
+      if (e.key === "ArrowRight") nextImage();
+      if (e.key === "ArrowLeft") prevImage();
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectedPainting, selectedIndex]);
 
   return (
-
-    <section className={`gallery ${darkMode ? "dark" : ""}`} id="gallery">
-      {/* Dark Mode Button (optional) */}
-      {/* <button className="theme-toggle" onClick={toggleDarkMode}>
-        <img src={themeIcon} alt="Toggle theme" />
-      </button> */}
-
+    <section className="gallery" id="gallery">
       <h2 className="gallery-title">Gallery</h2>
 
       <div className="gallery-grid">
         {paintings.map((painting) => (
-          <div
+          <button
             key={painting.id}
+            type="button"
             className="gallery-item"
             onClick={() => openModal(painting)}
+            aria-label={`Open artwork: ${painting.title}`}
           >
-            <img src={painting.image} alt={painting.title} />
+            <img src={painting.image} alt={painting.title} loading="lazy" />
             <p className="gallery-caption">{painting.title}</p>
-          </div>
+          </button>
         ))}
       </div>
 
-      {/* MODAL */}
       {selectedPainting && (
-        <div className="modal-overlay" onClick={closeModal}>
+        <div className="modal-overlay" onClick={closeModal} role="dialog" aria-modal="true">
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            {/* Close */}
-            <button className="modal-close" onClick={closeModal}>
+            <button className="modal-close" onClick={closeModal} aria-label="Close">
               ×
             </button>
 
-            {/* Prev */}
-            <button className="modal-nav modal-prev" onClick={prevImage}>
+            <button className="modal-nav modal-prev" onClick={prevImage} aria-label="Previous artwork">
               ‹
             </button>
 
-            {/* Next */}
-            <button className="modal-nav modal-next" onClick={nextImage}>
+            <button className="modal-nav modal-next" onClick={nextImage} aria-label="Next artwork">
               ›
             </button>
 
-            {/* Loading spinner */}
-            {loading && <div className="spinner"></div>}
+            {loading && <div className="spinner" aria-label="Loading" />}
 
-            {/* Image */}
             <img
               src={selectedPainting.image}
               alt={selectedPainting.title}
@@ -151,12 +153,10 @@ function Gallery() {
               onLoad={() => setLoading(false)}
             />
 
-            {/* Details */}
             <h2 className="modal-title">{selectedPainting.title}</h2>
 
             <p className="modal-counter">
-              {paintings.findIndex((p) => p.id === selectedPainting.id) + 1} /{" "}
-              {paintings.length}
+              {selectedIndex + 1} / {paintings.length}
             </p>
 
             <p className="modal-medium">
