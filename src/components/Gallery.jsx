@@ -11,7 +11,6 @@ function Gallery() {
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // audio (avoid new Audio each time)
   const openAudioRef = useRef(null);
   const clickAudioRef = useRef(null);
 
@@ -77,7 +76,6 @@ function Gallery() {
     else prevImage();
   };
 
-  // lock scroll + keyboard controls + preload neighbors
   useEffect(() => {
     if (!selectedPainting) return;
 

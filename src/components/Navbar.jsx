@@ -14,7 +14,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // close menu when resizing to desktop
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth > 860) setOpen(false);
